@@ -5,6 +5,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
+const ejs = require("ejs");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -13,7 +14,7 @@ var app = express();
 
 //mongodb setup
 mongoose.set("strictQuery", false);
-const mongodb = process.env.MONGODB_KEY;
+const mongoDB = process.env.MONGODB_KEY;
 
 main().catch((err) => console.log(err));
 async function main() {
@@ -22,7 +23,7 @@ async function main() {
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
