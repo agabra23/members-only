@@ -13,10 +13,10 @@ const UserSchema = new Schema({
 UserSchema.virtual("full_name").get(function () {
   let full_name = "";
   if (this.first_name && this.last_name) {
-    full_name = `${this.last_name}, ${this.first_name}`;
+    full_name = `${this.first_name} ${this.last_name}`;
   }
 
   return full_name;
 });
 
-module.exports = mongoose.Model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);
