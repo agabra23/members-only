@@ -9,6 +9,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const mongoose = require("mongoose");
 const ejs = require("ejs");
+const User = require("./models/User");
 
 var indexRouter = require("./routes/index");
 var signUpRouter = require("./routes/sign-up");
@@ -30,29 +31,43 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 passport.use(
-  new LocalStrategy(async (email, password, done) => {
-    try {
-      const user = await User.findOne({ email: email });
-      if (!user) {
-        return done(null, false, { message: "Incorrect email" });
+  new LocalStrategy(
+    {
+      usernameField: "email", // Specify the field name for the email in your HTML form
+      passwordField: "password", // Specify the field name for the password in your HTML form
+    },
+    async (email, password, done) => {
+      console.log("Local strategy");
+      console.log("Password is:", password);
+      try {
+        const user = await User.findOne({ email: email });
+        console.log("User is:", user);
+        if (!user) {
+          return done(null, false, { message: "Incorrect email" });
+        }
+        if (user.password !== password) {
+          console.log("no pswd match");
+          return done(null, false, { message: "Incorrect password" });
+        }
+        return done(null, user);
+      } catch (err) {
+        console.log("LS doesnt work");
+        return done(err);
       }
-      if (user.password !== password) {
-        return done(null, false, { message: "Incorrect password" });
-      }
-      return done(null, user);
-    } catch (err) {
-      return done(err);
     }
-  })
+  )
 );
 
 passport.serializeUser((user, done) => {
+  console.log("Serialized");
   done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await User.findById(id);
+    console.log("Deserialized");
+
     done(null, user);
   } catch (err) {
     done(err);

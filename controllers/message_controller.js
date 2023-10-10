@@ -13,5 +13,6 @@ exports.index = asyncHandler(async (req, res, next) => {
     .populate("user")
     .exec();
 
-  res.render("index", { messages });
+  console.log(req.user);
+  res.render("index", { messages: messages, user: req.user });
 });

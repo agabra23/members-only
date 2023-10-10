@@ -16,4 +16,13 @@ const message_controller = require("../controllers/message_controller");
 // GET HOME PAGE
 router.get("/", message_controller.index);
 
+router.get("/log-out", (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/");
+  });
+});
+
 module.exports = router;

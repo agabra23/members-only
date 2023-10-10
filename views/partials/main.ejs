@@ -1,6 +1,15 @@
+<% if (user) { %>
+  <h3>Welcome <%= user.full_name %></h3>
+<% } else { %>
+  <h3>Not Logged In</h3>
+<% } %>
 <% for(let i=0; i< messages.length; i++) { %>
 <div class="message-container">
-  <h4><%= messages[i].user.full_name %></h4>
+  <% if (user) { %>
+    <h4><%= messages[i].user.full_name %></h4>
+  <% } else { %>
+    <h4>Anonymous</h4>
+  <% } %>
   <h4>
     Posted: <%= messages[i].timestamp.toLocaleDateString('en-us', {
     weekday:"long", year:"numeric", month:"short", day:"numeric"}) %>
