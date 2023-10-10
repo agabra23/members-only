@@ -12,6 +12,7 @@ const ejs = require("ejs");
 
 var indexRouter = require("./routes/index");
 var signUpRouter = require("./routes/sign-up");
+var logInRouter = require("./routes/log-in");
 
 var app = express();
 
@@ -28,6 +29,36 @@ async function main() {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+passport.use(
+  new LocalStrategy(async (email, password, done) => {
+    try {
+      const user = await User.findOne({ email: email });
+      if (!user) {
+        return done(null, false, { message: "Incorrect email" });
+      }
+      if (user.password !== password) {
+        return done(null, false, { message: "Incorrect password" });
+      }
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
+});
+
 app.use(session({ secret: "cats", resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -40,6 +71,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/sign-up", signUpRouter);
+app.use("/log-in", logInRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
