@@ -10,6 +10,7 @@ var logger = require("morgan");
 const mongoose = require("mongoose");
 const ejs = require("ejs");
 const User = require("./models/User");
+const bcrypt = require("bcryptjs");
 
 var indexRouter = require("./routes/index");
 var signUpRouter = require("./routes/sign-up");
@@ -45,10 +46,18 @@ passport.use(
         if (!user) {
           return done(null, false, { message: "Incorrect email" });
         }
-        if (user.password !== password) {
-          console.log("no pswd match");
+        // if (user.password !== password) {
+        //   console.log("no pswd match");
+        //   return done(null, false, { message: "Incorrect password" });
+        // }
+
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+          // passwords do not match!
+          console.log("Passwords do not match");
           return done(null, false, { message: "Incorrect password" });
         }
+
         return done(null, user);
       } catch (err) {
         console.log("LS doesnt work");
