@@ -24,7 +24,7 @@ mongoose.set("strictQuery", false);
 const dev_db_url =
   "mongodb+srv://admin:crdKlw1P7w4THh9P@cluster0.jzretqm.mongodb.net/?retryWrites=true&w=majority";
 
-const mongoDB = process.env.MONGODB_URI || dev_db_url;
+const mongoDB = process.env.MONGODB_URL || dev_db_url;
 
 main().catch((err) => console.log(err));
 async function main() {
