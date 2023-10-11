@@ -18,7 +18,7 @@ exports.index = asyncHandler(async (req, res, next) => {
 });
 
 exports.get_create_message = asyncHandler(async (req, res, next) => {
-  res.render("new-message");
+  res.render("new-message", { user: req.user });
 });
 
 exports.create_message = asyncHandler(async (req, res, next) => {
