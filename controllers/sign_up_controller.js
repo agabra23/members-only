@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 
 exports.index = asyncHandler(async (req, res, next) => {
-  res.render("sign-up");
+  res.render("sign-up", { user: req.user });
 });
 
 exports.create_user = asyncHandler(async (req, res, next) => {
@@ -31,8 +31,8 @@ exports.create_user = asyncHandler(async (req, res, next) => {
     }
 
     const user = new User({
-      first_name: "Andrew",
-      last_name: "Gabra",
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
       email: req.body.email,
       password: hashedPassword,
       isMember: false,

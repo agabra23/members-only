@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('partials/head') %>
+  </head>
+  <body>
+    <header class="flex"><%- include('partials/nav.ejs') %></header>
+    <main>
+      <h1>Create a New Message</h1>
+      <form action="/new-message" method="POST">
+        <label for="message">Write Message</label>
+        <textarea name="message" placeholder="Message"></textarea>
+
+        <button>Submit</button>
+      </form>
+    </main>
+  </body>
+</html>

@@ -4,7 +4,7 @@ const asyncHandler = require("express-async-handler");
 const passport = require("passport");
 
 exports.index = asyncHandler(async (req, res, next) => {
-  res.render("log-in");
+  res.render("log-in", { user: req.user });
 });
 
 exports.authenticate = (req, res, next) => {

@@ -3,6 +3,9 @@
 <% } else { %>
   <h3>Not Logged In</h3>
 <% } %>
+<% if (user) {%>
+  <button><a href="/new-message">Create New Message</a></button>
+<% } %>
 <% for(let i=0; i< messages.length; i++) { %>
 <div class="message-container">
   <% if (user) { %>

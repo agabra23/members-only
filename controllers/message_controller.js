@@ -16,3 +16,23 @@ exports.index = asyncHandler(async (req, res, next) => {
   console.log(req.user);
   res.render("index", { messages: messages, user: req.user });
 });
+
+exports.get_create_message = asyncHandler(async (req, res, next) => {
+  res.render("new-message");
+});
+
+exports.create_message = asyncHandler(async (req, res, next) => {
+  try {
+    console.log("User", req.user);
+    const message = new Message({
+      timestamp: new Date(),
+      text: req.body.message,
+      user: req.user,
+    });
+
+    const result = await message.save();
+    res.redirect("/");
+  } catch (err) {
+    return next(err);
+  }
+});
